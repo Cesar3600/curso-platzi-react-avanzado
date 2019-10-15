@@ -1,10 +1,8 @@
 
-INSTALANDO REACT & BABEL
+LINTER EXTENSIONS Y DEPLOY CON NOW
 
-instalado react & react-dom:
-npm i -S react react-dom
-
-
+instalando standard:
+npm i -D standard
 
 
 crear carpeta src y dentro el archivo index.js
