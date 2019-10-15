@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 
-ReactDom.render('hola mundo!',document.body)
+ReactDom.render(<h3>hacia el siguiente curso</h3>,document.getElementById('app'))
 
 
 

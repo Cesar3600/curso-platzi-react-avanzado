@@ -1,0 +1,118 @@
+
+INSTALANDO REACT & BABEL
+
+instalado react & react-dom:
+npm i -S react react-dom
+
+
+
+
+crear carpeta src y dentro el archivo index.js
+
+////////////////////////////////////////////////////////////////////////////
+index.js:
+---------------------------------------------------------------------------
+import React from 'react'
+import ReactDom from 'react-dom'
+
+React.render('hola platzi', document.body)
+///////////////////////////////////////////////////
+
+
+
+
+
+crear archivo index.html dentro de carpeta src, con un div con id llamado app:
+
+////////////////////////////////////////////////////////////////////////////
+index.html
+----------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>mi proyecto</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+</html>
+
+////////////////////////////////////////////////////////////////////////////
+
+
+
+
+re-configurando webpack.config.js para utilizar el template src/index.html
+
+/////////////////////////////////////////////////////////////////////////////
+webpack.config.js
+----------------------------------------------------------------------------
+const HtmlWP = require('html-webpack-plugin')
+
+module.exports = {
+    output:{
+        filename:'bundle.js'
+
+    },
+    plugins: [
+        new HtmlWP({
+            template:"src/index.html"
+        })
+    ]
+}
+
+
+
+
+modificando el webpack.config.js para utilizar los presets
+
+///////////////////////////////////////////////////////////////////////////////
+webpack.config.js
+-------------------------------------------------------------------------------
+
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+    output:{
+        filename:'mibundle.js'
+    },
+    plugins:[
+        new HtmlWebpackPlugin({
+            template:'src/index.html'
+        })
+    ],
+    module:{
+        rules:[
+            {
+                test:/\.js$/,
+                exclude:/node_modules/,
+                use:{
+                    loader:'babel-loader',
+                    options:{
+                        presets:[
+                            '@babel/preset-env',
+                            '@babel/preset-react'
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+
+}
+
+el modulo requiere de una regla. 
+a travez de test indica que tipo de archivos usaran esta regla.
+excluye la carpeta node_modules
+utiliza el loader babel-loader que necesita webpack para utilizar babel
+como opciones utiliza los presets y estos son 2: preset-env, y preset-react
+
+
+
+
+
+
+
