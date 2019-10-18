@@ -1,29 +1,35 @@
 
-LINTER EXTENSIONS Y DEPLOY CON NOW
+CREANDO PRIMER COMPONENTE CATEGORY
 
-instalando standard:
-npm i -D standard
+instalando styled-components:
+npm i -S styled-components
 
 
-crear carpeta src y dentro el archivo index.js
+crear archivo App.js dentro de carpeta src
 
 ////////////////////////////////////////////////////////////////////////////
-index.js:
+App.js:
 ---------------------------------------------------------------------------
 import React from 'react'
-import ReactDom from 'react-dom'
 
-React.render('hola platzi', document.body)
+export const App = () => {
+    return(
+        <h2>hello world! klasse nummer sieben</h2>
+    ) 
+
+}
+
 ///////////////////////////////////////////////////
 
 
 
+crear la carpeta category dentro de carpeta src
+dentro crear el archivo index.js
 
 
-crear archivo index.html dentro de carpeta src, con un div con id llamado app:
 
 ////////////////////////////////////////////////////////////////////////////
-index.html
+index.js
 ----------------------------------------------------------------------------
 <!DOCTYPE html>
 <html lang="en">

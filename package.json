@@ -5,15 +5,9 @@
   "main": "index.js",
   "scripts": {
     "now-build":"npm run build",
-<<<<<<< HEAD
-    "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server",
-=======
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server",
     "build": "webpack",
->>>>>>> 75f45ce3e5e2cdeb8bfbb5e00be1d41ec334e5f1
     "lint": "standard"
   },
   "keywords": [],
@@ -35,7 +29,6 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
   },
-<<<<<<< HEAD
   "standard": {
     "ignore": [
       "/api/**"
@@ -44,13 +37,5 @@
   },
   "eslintConfig": {
     "extends": ["./node_modules/standard/eslintrc.json"]
-=======
-  "standard":{
-    "ignore": "/api/**",
-    "parser": "babel-eslint"
-  },
-  "eslintConfig":{
-    "extends":["./node_modules/standard/eslintrc.json"]
->>>>>>> 75f45ce3e5e2cdeb8bfbb5e00be1d41ec334e5f1
   }
 }
