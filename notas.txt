@@ -1,102 +1,179 @@
 
-CREANDO PRIMER COMPONENTE CATEGORY
+CREANDO LISTOFCATEGORIES Y ESTILOS GLOBALES
 
-instalando styled-components:
-npm i -S styled-components
-
-
-crear archivo App.js dentro de carpeta src
+crear archivo en src/listOfCategories/index.js
 
 ////////////////////////////////////////////////////////////////////////////
-App.js:
+index.js: 
+li require de la propiedad key para diferenciar cada uno de los elementos de la lista
 ---------------------------------------------------------------------------
 import React from 'react'
+import { Category } from '../category'
+
+export const ListOfCategories = () =>
+  <ul>
+    {
+      [1, 2, 3].map(category => <li key={category}><Category /></li>)
+    }
+  </ul>
+
+////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+modifica el archivo App.js
+
+////////////////////////////////////////////////////////////////////////////
+app.js:
+ahora se llama a listOfCategories
+---------------------------------------------------------------------------
+
+import React from 'react'
+import { ListOfCategories } from './listOfCategories'
 
 export const App = () => {
-    return(
-        <h2>hello world! klasse nummer sieben</h2>
-    ) 
-
-}
-
-///////////////////////////////////////////////////
-
-
-
-
-
-crear la carpeta category dentro de carpeta src
-dentro crear el archivo index.js
-
-cons el siguiente contenido:
-
-////////////////////////////////////////////////////////////////////////////
-index.js
-----------------------------------------------------------------------------
-import React from 'react'
-import { Anchor, Imagen } from './styles'
-
-const IMG_DEFAULT = 'https://imgur.com/dJa0Hpl.jpg'
-
-export const Category = ({ cover = IMG_DEFAULT, path, emoji }) => {
-  return(
-    <Anchor href={path}>
-        <Imagen src={cover}/>
-        {emoji}
-    </Anchor>
+  return (
+    <ListOfCategories />
   )
 }
 ////////////////////////////////////////////////////////////////////////////
 
 
-agregar estilos utilizando styled-components,
-importar Styled desde styled components y exportar cada variable 
-/////////////////////////////////////////////////////////////////////////////
-styled.js
-----------------------------------------------------------------------------
+
+creamos el archivo styles.js dentro de carpeta listOfCategories
+
+////////////////////////////////////////////////////////////////////////////
+styles.js:
+List:
+overflow: scroll -> si el ancho de la pantalla no es suficiente para el total
+de elementos entonces que se pueda navegar usando el scroll
+
+width: 100%; ->debe ocupar un 100% de la pantalla
+
+
+Item:
+padding: 0 8px;
+
+---------------------------------------------------------------------------
+
 import Styled from 'styled-components'
 
-export const Anchor = Styled.a`
+export const Lista = Styled.ul`
   display: flex;
-  text-align: center;
-  flex-direction: column;
-  text-decoration: none;
-  width: 75px;
+  overflow:scroll;
+  width: 100%;
 `
-export const Imagen = Styled.img`
-  border-radius: 50%;
-  box-shadow: 0 10px 14px rgba(0,0,0,.2);
-  border: 1px solid #ddd;
-  height: 75px;
-  width: 75px;
-  overflow: hidden;
-  object-fit: cover;
+
+export const Item = Styled.li`
+padding: 0 8px;
+
 `
+
 ////////////////////////////////////////////////////////////////////////////
 
 
 
-en Category/index.js
+
+modificamos el archivo index.js de listOfCategories
+
 ////////////////////////////////////////////////////////////////////////////
-index.js
-----------------------------------------------------------------------------
+index.js:
+importar Lista e Item
+modificar etiquetas ul y li
+---------------------------------------------------------------------------
 
 import React from 'react'
-import { Anchor, Imagen } from './styles'
+import { Category } from '../category'
+import { Lista, Item } from './styles'
 
-const IMG_DEFAULT = 'https://imgur.com/dJa0Hpl.jpg'
+export const ListOfCategories = () =>
+  <Lista>
+    {
+      [1, 2, 3].map(category => <Item key={category}><Category /></Item>)
+    }
+  </Lista>
+`
 
-export const Category = ({ cover = IMG_DEFAULT, path, emoji='?' }) => {
-  return(
-    <Anchor href={path}>
-        <Imagen src={cover}/>
-        {emoji}
-    </Anchor>
+////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+creando GLOBAL STYLES
+////////////////////////////////////////////////////////////////////////////
+crear archivo GlobalStyles.js al nivel de app.js
+importar createGlobalStyles desde styled-components
+---------------------------------------------------------------------------
+
+
+import { createGlobalStyle } from 'styled-components'
+
+export const GlobaStyle = createGlobalStyle`
+    html {
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    *, *::before, *::after {
+        box-sizing: inherit;
+    }
+
+    ul, li, h1, h2, h3, p, button {
+        margin: 0;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    button {
+        background: transparent;
+        border: 0;
+        outline: 0;
+    }
+
+    body {
+        background: #fefefe;
+        height: 100vh;
+        margin: 0 auto;
+        max-width: 500px;
+        overscroll-behavior: none;
+        width: 100%;
+    }
+
+    #app {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        overflow-x: hidden;
+        min-height: 100vh;
+        padding-bottom: 10px;
+    }
+`
+
+////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+crear archivo GlobalStyles.js al nivel de app.js
+importar globalStyle desde GlobalStyle y agregarlo
+---------------------------------------------------------------------------
+import React from 'react'
+import { ListOfCategories } from './listOfCategories'
+import { GlobalStyle } from './GlobalStyle'
+
+export const App = () => {
+  return (
+    <>
+      <GlobalStyle />
+      <ListOfCategories />
+    </>
   )
 }
 
-importar utilizando llaves para evaluar las variables que se exportan desde el archivo styles.js
-reemplazar a por Anchor e img por Imagen
-
-
-
+////////////////////////////////////////////////////////////////////////////
