@@ -1,36 +1,37 @@
 
-USAR INFORMACION REAL DE LAS CATEGORIAS
+CREANDO PHOTOCARD Y USANDO REACT-ICON
 
-Modificar el archivo index.js de listOfCategories.
-podemos importar directamente las categorias de la api
-dentro de la carpeta api existe un archivo llamado db.json que tiene toda la
-informacion de las categorias
-importaremos ese archivo a listOfCategories para mostrar informacion real
-al usuario mientras preparamos el fetching de datos mas adelante.
-Esto nos va ayudar como estilamos mejor con informacion real.
+pasamos las carpetas category y listOfCategories a la carpeta components dentro de src
 
+crear la carpeta : components/PhotoCard
 
 ////////////////////////////////////////////////////////////////////////////
 index.js: 
-importamos categories y lo usamos en vez del arreglo (categories es un arreglo en db.json)
+
+se utilizo una imagen de db.json como default
 ---------------------------------------------------------------------------
 
-import React from 'react'
-import { Category } from '../category'
-import { Lista, Item } from './styles'
-import { categories } from '../../api/db.json'
 
-export const ListOfCategories = () =>
-  <Lista>
-    {
-      categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
-    }
-  </Lista>
+import React from 'react'
+const IMG_DEFAULT = 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+
+export const PhotoCard = ({ id = 3, likes = '?', src = IMG_DEFAULT }) => {
+    return(
+        <article>
+            <a href={`/detail/${id}`}>
+                <div>
+                    <img src={src}/>
+                </div>
+            </a>
+            <button>
+                {likes} likes!
+            </button>
+        </article>
+    )
+}
+
 
 ////////////////////////////////////////////////////////////////////////////
 
-utilizamos el operador rest (...) para pasar todos los datos ya que los nombres de las keys son iguales 
-en cagtegory como en el archivo db.json
 
-se deben ver los cambios en el localhost:8080
 

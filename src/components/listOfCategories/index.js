@@ -2,7 +2,7 @@
 import React from 'react'
 import { Category } from '../category'
 import { Lista, Item } from './styles'
-import { categories } from '../../api/db.json'
+import { categories } from '../../../api/db.json'
 
 export const ListOfCategories = () =>
   <Lista>
