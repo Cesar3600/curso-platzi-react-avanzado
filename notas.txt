@@ -9,23 +9,29 @@ crear la carpeta : components/PhotoCard
 index.js: 
 
 se utilizo una imagen de db.json como default
+se instalo react-icons y se importo el icono MdFavoriteBorder que se utiliza
+como un componente 
 ---------------------------------------------------------------------------
 
 
+
 import React from 'react'
+import {ImgWrapper, Img, Button} from './styles'
+import { MdFavoriteBorder } from "react-icons/md";
+
 const IMG_DEFAULT = 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
 
-export const PhotoCard = ({ id = 3, likes = '?', src = IMG_DEFAULT }) => {
+export const PhotoCard = ({ id, likes='?', src = IMG_DEFAULT }) => {
     return(
         <article>
             <a href={`/detail/${id}`}>
-                <div>
-                    <img src={src}/>
-                </div>
+                <ImgWrapper>
+                    <Img src={src}/>
+                </ImgWrapper>
             </a>
-            <button>
-                {likes} likes!
-            </button>
+            <Button>
+                <MdFavoriteBorder/>{likes} likes!
+            </Button>
         </article>
     )
 }
@@ -37,7 +43,67 @@ export const PhotoCard = ({ id = 3, likes = '?', src = IMG_DEFAULT }) => {
 
 
 
+////////////////////////////////////////////////////////////////////////////
+styled.js: 
+
+da estilos al wrapper, esconde elementos que sobresalen del wrapper, 
+padding : 56.25% para mantener el mismo aspecto. en este caso el contenido 
+de la imagen hacia arriba.
+---------------------------------------------------------------------------
+
+import Styled from 'styled-components'
+
+export const ImgWrapper = Styled.div`
+    border-radius: 10px;
+    display: block;
+    padding: 56.25% 0 0 0;
+    height: 0;
+    overflow:hidden;
+    width:100%;
+    position: relative;
+`
+export const Img = Styled.img`
+    box-shadow: 0 10px 14px rgba(0,0,0,.2);
+    height: 100%;
+    object-fit:cover;
+    position:absolute;
+    top:0;
+    width:100%;
+`
+export const Button = Styled.button`
+    padding-top: 8px;
+    display:flex;
+    align-items: center;
+    & svg{
+        margin-left: 4px;
+    }
+`
+
+
+////////////////////////////////////////////////////////////////////////////
 
 
 
 
+se creo una carpeta llamada listOfPhotocard
+dentro un archivo llamado index.js
+////////////////////////////////////////////////////////////////////////////
+index.js: 
+luego se llama el listOfCategories dentro de App.js
+---------------------------------------------------------------------------
+
+import React from 'react'
+import { PhotoCard } from '../PhotoCard'
+
+export const ListOfPhotocards = () => {
+  return (
+    <ul>
+      {
+        [1, 2, 3].map(id => <li key={id}><PhotoCard /></li>)
+      }
+    </ul>
+  )
+}
+////////////////////////////////////////////////////////////////////////////
+
+el resultado es una lista de 3 fotos iguales 
