@@ -35,3 +35,9 @@ export const PhotoCard = ({ id = 3, likes = '?', src = IMG_DEFAULT }) => {
 
 
 
+
+
+
+
+
+
