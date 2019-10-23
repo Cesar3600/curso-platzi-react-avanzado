@@ -1,188 +1,94 @@
 
-CREANDO ANIMACIONES CON KEYFRAMES
+QUE SON HOOKS
+react-hoos esta disponibles a apartir de la version 16.8.0
 
-crear efect utilizando keyframes de styled-components
-////////////////////////////////////////////////////////////////////////////
-styles.js 
+funciones que nos permiten acceder a casi todas las caracteristicas de react desde
+componentes funcionales.
 
-importar keyframes 
-instanciar keyframes a constante fadeInKeyFrames
-agregar animation en ImgWrapper
-efecto ease 
-opacity: opacity: o y blur:5px
----------------------------------------------------------------------------
-
-import Styled, { keyframes } from 'styled-components'
-
-const fadeInKeyFrames = keyframes`
-    from{
-        opacity: 0;
-        filter:blur(10px)
-    }
-    to{
-        opacity: 1;
-        filter: blur(0px)
-    }
-`
-
-export const ImgWrapper = Styled.div`
-    animation: ease ${fadeInKeyFrames} 1s;
-    border-radius: 10px;
-    display: block;
-    padding: 56.25% 0 0 0;
-    height: 0;
-    overflow:hidden;
-    width:100%;
-    position: relative;
-`
-export const Img = Styled.img`
-    box-shadow: 0 10px 14px rgba(0,0,0,.2);
-    height: 100%;
-    object-fit:cover;
-    position:absolute;
-    top:0;
-    width:100%;
-`
-export const Button = Styled.button`
-    padding-top: 8px;
-    display:flex;
-    align-items: center;
-    & svg{
-        margin-left: 4px;
-    }
-`
+hooks principales:
+* useState -> añade un estado local en el componente.
+* useEffect -> permite ejecutar una funcion cada vez que renderizemos nuestro componente.
+* useContext -> nos permite acceder a la contextAPI para obtener valores que usaremos en
+toda la aplicacion de forma global sin necesidad de pasarla por las props.
 
 ////////////////////////////////////////////////////////////////////////////
+se importa el hook userState
+import React, { useState } from 'react'
 
-TRANSFORMANDO LA ANIMACION A UNA FUNCION REUTILIZABLE
+se crea la funcion Counter y se exporta, en este caso se exporta por defecto
+export default function Counter(){
+
+se crea una constante que es una variable con 2 valores : 
+el primero se refiere al valor del estado
+el segundo valor se refiere a una funcion que actualiza a la primera
+el valor de useState es el valor inicial(0) de counter 
+const [counter,setCounter] = useState(0)
+
+en el evento onClick se evalua la funcion anonima que manipula el valor counter agregandome
+un numero mas 
+
+--------------------- -------------------------------------------------------
 
 
-import Styled,{keyframes,css} from 'styled-components'
-import { fadeIn } from '../../components/styles/animation'
+import React, { useState } from 'react
 
-
-const keyFrameEffect = keyframes`
-    from{
-        filter:blur(33px);
-        opacity: 0
-    }
-    to{
-        filter: blur(0px);
-        opacity:1;
-    }
-`
-
-export const fadeIn = ({ time = '1s', type = 'ease' } = {}) =>
-  css`animation: ${time} ${keyFrameEffect} ${type};`
-
-export const ImgWrapper = Styled.div`
-    ${fadeIn({type='linear'})}
-    border-radius: 10px;
-    display: block;
-    padding: 56.25% 0 0 0;
-    height: 0;
-    overflow:hidden;
-    width:100%;
-    position: relative;
-`
-export const Img = Styled.img`
-    box-shadow: 0 10px 14px rgba(0,0,0,.2);
-    height: 100%;
-    object-fit:cover;
-    position:absolute;
-    top:0;
-    width:100%;
-`
-export const Button = Styled.button`
-    padding-top: 8px;
-    display:flex;
-    align-items: center;
-    & svg{
-        margin-left: 4px;
-    }
-`
-
+export default function Counter(){
+  const [counter,setCounter] = useState(0)
+  return(
+    <div>
+      <span>{counter}</span>
+      <button onClick = {() => setCounter(counter + 1)}> + </button>
+      <button onClick = {() => setCounter(counter - 1)}> - </button>
+    </div>
+  )
+}
 
 
 
 ////////////////////////////////////////////////////////////////////////////
 
-SE PUEDE HACER AUN MAS REUTILIZABLE SEPARANDOLA A OTRO ARCHIVO
 
-creamos la carpeta styles dentro de la carpeta components:
+import React, { Component } from 'react'
 
-components/styles/animation.js
-------------------------------------------------------------------------------
-
-
-import { keyframes, css } from 'styled-components'
-
-const keyFrameEffect = keyframes`
-    from{
-        filter:blur(33px);
-        opacity: 0
+class Counter extends Component{
+  constructor(){
+    super();
+    this.state = {
+      counter : 0
     }
-    to{
-        filter: blur(0px);
-        opacity:1;
-    }
-`
+  }
+  render(){
+    const {counter} = this.state
+    return(
+      <>
+        <span>{counter}<span>
+        <button onClick = { () => this.setState({counter: counter + 1}) }> + </button>
+        <button onClick = { () => this.setState({counter: counter - 1}) }> - </button>
+      </>
+    )
+  }
+}
 
-export const fadeIn = ({ time = '1s', type = 'ease' } = {}) =>
-  css`animation: ${time} ${keyFrameEffect} ${type};`
+/////////////////////////////////////////////////////////////////////////////
 
+HOOKS AUXILIARES
 
-////////////////////////////////////////////////////////////////////////////
-tambien pegamos el archivo globalStyle.js dentro de la carpeta style.
-hacemos el cambio respectivo en App.js
+useReducer
+useCallback
+useMemo
+useRef
+useImperativeHandle
+useLayoutEffect
+useDebugValue
 
-
-
-
-
-////////////////////////////////////////////////////////////////////////////
-En PhotoCard/index.js
-
-importamos fadeIn y lo utilizamos dentro de Img
-----------------------------------------------------------------------------
-
-import Styled from 'styled-components'
-import { fadeIn } from '../../components/styles/animation'
-
-export const ImgWrapper = Styled.div`
-    border-radius: 10px;
-    display: block;
-    padding: 56.25% 0 0 0;
-    height: 0;
-    overflow:hidden;
-    width:100%;
-    position: relative;
-`
-export const Img = Styled.img`
-    ${fadeIn()}
-    box-shadow: 0 10px 14px rgba(0,0,0,.2);
-    height: 100%;
-    object-fit:cover;
-    position:absolute;
-    top:0;
-    width:100%;
-`
-export const Button = Styled.button`
-    padding-top: 8px;
-    display:flex;
-    align-items: center;
-    & svg{
-        margin-left: 4px;
-    }
-`
+puedes crear tu propio custom hook
 
 
-////////////////////////////////////////////////////////////////////////////
++ventajas
 
-
-
-
-
+100% compatibles.
+transpilacion con babel.
+mejor performance.
 
 
 

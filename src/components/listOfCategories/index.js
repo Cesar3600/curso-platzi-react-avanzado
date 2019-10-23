@@ -1,12 +1,16 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Category } from '../category'
 import { Lista, Item } from './styles'
-import { categories } from '../../../api/db.json'
+import { categories as mockCategories } from '../../../api/db.json'
 
-export const ListOfCategories = () =>
-  <Lista>
-    {
-      categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
-    }
-  </Lista>
+export const ListOfCategories = () => {
+  const [categories, setCategory] = useState(mockCategories)
+  return (
+    <Lista>
+      {
+        categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
+      }
+    </Lista>
+  )
+}
