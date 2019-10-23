@@ -1,145 +1,181 @@
 
-SVGR de SVG a componente de ReactJS
+CREANDO ANIMACIONES CON KEYFRAMES
 
-crearemos un logo desde la pagina https://maketext.io
-el logo debe llamarse petgram
-seleccionar un diseño, editar el logo como desees
-descargar como un svg dandole click a download
-
-luego ir a la web https://jakearchibald.github.io/svgomg/
-es una herramienta que sirve para optimizar svg
-arrastrar la imagen svg hasta la web
-fijarse que desde ya se ha optimizado el peso de la imagen
-salvar dandole click en el boton "copy as svg".
-
-para convertir un svg en componente de reactJs usaremos la herramienta SVGR
-https://www.smooth-code.com/open-source/svgr/playground/
-copiar el codigo svg y automaticamente se genera el componente en reactJs
-copiar el componente
-
-crear la carpeta components/logo
-y dentro el archivo index.js
-dentro pegar el codigo
-
+crear efect utilizando keyframes de styled-components
 ////////////////////////////////////////////////////////////////////////////
-index.js: 
-cambiar el nombre a Logo y exportarlo
+styles.js 
 
+importar keyframes 
+instanciar keyframes a constante fadeInKeyFrames
+agregar animation en ImgWrapper
+efecto ease 
+opacity: opacity: o y blur:5px
 ---------------------------------------------------------------------------
-import React from 'react'
 
-export const Logo = props => (
-  <svg
-    width={212.355}
-    height={72.806}
-    viewBox="143.822 38.597 212.355 72.806"
-    style={{
-      background: '0 0',
-    }}
-    preserveAspectRatio="xMidYMid"
-    {...props}
-  >
-    <defs>
-      <linearGradient
-        id="prefix__editing-shiny-gradient"
-        x1={0.043}
-        x2={0.957}
-        y1={0.297}
-        y2={0.703}
-        gradientUnits="objectBoundingBox"
-      >
-        <stop offset={0} stopColor="#ffb200" />
-        <stop offset={0.5} stopColor="#e10057" />
-        <stop offset={1} stopColor="#5A1A80" />
-      </linearGradient>
-      <linearGradient
-        id="prefix__editing-shiny-gradient2"
-        x1={0}
-        x2={0}
-        y1={0}
-        y2={1}
-      >
-        <stop offset={0.2} stopColor="#fff" stopOpacity={0.8} />
-        <stop offset={0.8} stopColor="#fff" stopOpacity={0} />
-      </linearGradient>
-      <filter
-        id="prefix__editing-shiny2"
-        x="-100%"
-        y="-100%"
-        width="300%"
-        height="300%"
-      >
-        <feMorphology radius={2} />
-      </filter>
-      <filter
-        id="prefix__editing-shiny"
-        x="-100%"
-        y="-100%"
-        width="300%"
-        height="300%"
-      >
-        <feFlood floodColor="#fff" result="flood" />
-        <feConvolveMatrix
-          in="SourceGraphic"
-          result="conv"
-          order="8,8"
-          divisor={1}
-          kernelMatrix="0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 1 1 0 0 0 0 0 1 0 0 1 0 0 0 0 1 0 0 1 0 0 0 1 0 0 0 0 1 0 0 1 1 0 0 1 1 0 0 0 0 1 1 0 0 0"
-        />
-        <feOffset dy={4} in="conv" result="offset" />
-        <feComposite operator="in" in="flood" in2="offset" result="comp" />
-        <feGaussianBlur in="offset" stdDeviation={3} result="shadow" />
-        <feColorMatrix
-          in="shadow"
-          values="0.7 0 0 0 0 0 0.7 0 0 0 0 0 0.7 0 0 0 0 0 0.3 0"
-          result="dark-shadow"
-        />
-        <feOffset dy={4} in="dark-shadow" result="offset-shadow" />
-        <feOffset dy={2} in="conv" result="offset-2" />
-        <feComposite
-          operator="out"
-          in="offset"
-          in2="offset-2"
-          result="edge-diff"
-        />
-        <feGaussianBlur in="edge-diff" stdDeviation={1} result="edge-blur" />
-        <feColorMatrix
-          in="edge-blur"
-          result="edge-shadow"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"
-        />
-        <feComposite
-          operator="in"
-          in="edge-shadow"
-          in2="offset"
-          result="edge-shadow-in"
-        />
-        <feOffset dy={1} in="edge-shadow-in" result="edge-shadow-final" />
-        <feMerge result="out">
-          <feMergeNode in="offset-shadow" />
-          <feMergeNode in="comp" />
-          <feMergeNode in="edge-shadow-final" />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-    </defs>
-    <g filter="url(#prefix__editing-shiny)">
-      <path
-        d="M13.46-22.01q8.09 0 8.09 5.71 0 3.13-2.01 5.01-1.98 1.88-5.45 1.88-1.62 0-2.87-.92-.59-.39-.99-.92 2.41 0 3.68-1.47t1.27-4.34q0-2.87-2.84-2.87h-.79q-.2 0-.36.03L7.39 0H.23l4.06-21.62q3.53-.33 5.58-.36 2.04-.03 3.59-.03zM35.08-5.58q.82.56.82 1.8t-.62 2.03q-.63.79-1.65 1.32Q31.52.66 29.24.66T25.62.17q-1.33-.5-2.22-1.42Q21.65-3 21.65-6.2q0-4.99 2.7-8.02 2.91-3.27 7.96-3.27 3.13 0 4.68 1.32 1.16.99 1.16 2.61 0 5.8-10.03 5.8-.14.86-.14 1.59 0 1.52.68 2.09.68.58 1.93.58 1.26 0 2.59-.58 1.34-.57 1.9-1.5zm-6.73-3.59q2.34 0 3.69-1.46 1.36-1.38 1.36-3.59 0-.76-.28-1.17-.28-.42-.85-.42-.56 0-1.04.22-.47.21-.97.94-1.22 1.65-1.91 5.48zM39.8-3.3q0-.89.46-3.14l1.75-8.91h-1.95l.13-.99q3.96-1.18 7.79-4.09h1.59l-.8 3.6h2.58l-.3 1.48h-2.54l-1.68 8.91q-.43 2.05-.43 2.74 0 1.59 1.38 1.92Q47.45-.66 46.27 0q-1.19.66-2.87.66-1.69 0-2.64-1.06-.96-1.05-.96-2.9zm24.75-7.33l6.66-.59Q68.84-6.01 68.84.03q-.89.63-2.2.63-1.3 0-2.12-.61-.83-.61-1-1.24-.82.86-2.16 1.36-1.33.49-2.75.49T55.95.2q-1.24-.46-2.19-1.49-2.11-2.24-2.11-6.5 0-6.6 3.53-10.56 3.63-4.09 10.06-4.09 4.46 0 6.04 2.31.5.73.5 1.6 0 .87-.38 1.62-.38.74-.98 1.33-1.42 1.32-3.17 1.32-.69 0-1.35-.23.13-.99.13-2.14 0-1.16-.08-1.69-.08-.52-.28-.95-.43-.89-1.37-.89-.94 0-1.98 1-1.04 1.01-1.86 2.66-1.82 3.7-1.82 8.15 0 2.05.79 3.5.86 1.58 2.38 1.58.53 0 1.01-.26.47-.27.67-.46l1.06-6.64zm18.61 1.36q1.19-2.11 1.19-4.26 0-1.42-1.03-1.42-.79 0-1.61 1.35-.86 1.36-1.12 3.11L78.87 0l-6.83.66 3.37-17.49 5.44-.66-.59 3.33q1.61-3.33 5.24-3.33 1.92 0 2.96.99t1.04 3.02q0 2.03-1.34 3.32-1.34 1.28-3.61 1.28-.99 0-1.39-.39zm8.3 8.28q-.78-.86-1.12-2.21-.35-1.35-.35-3.57 0-2.21.76-4.22t2.14-3.46q2.84-3.04 7.53-3.04 1.68 0 2.9.56l5.65-.56-2.45 12.87q-.1.4-.1 1.12 0 .73.45 1.19.45.46 1.11.53-.33 1.12-1.54 1.78-1.2.66-2.56.66-1.35 0-2.26-.51-.9-.51-1.17-1.37-.53.82-1.65 1.35-1.12.53-2.62.53t-2.72-.4q-1.23-.39-2-1.25zm6.96-13.4q-.38.6-.71 1.6-.33 1.01-.87 3.7-.55 2.69-.55 4.6 0 1.92.3 2.48t.83.56q1.05 0 1.83-1.01.77-1.01 1.07-2.79l1.75-9.67q-.69-.59-1.5-.59t-1.29.26q-.48.27-.86.86zM134.51.66q-4 0-4-3.1 0-1.36.58-3.98t.78-3.68q.46-2.41.46-3.17 0-1.68-1.25-1.68-.83 0-1.62 1.14-.79 1.14-1.16 3.41L126.26 0l-6.44.66 1.79-8.98q.29-1.48.56-3.16.26-1.69.26-1.95 0-1.52-1.12-1.52-.76 0-1.59 1.12-.82 1.12-1.28 3.43L116.42 0l-6.5.66 3.47-17.49 5.38-.66-.56 3.33q.85-1.78 2.44-2.55 1.58-.78 4.06-.78 1.42 0 2.34.69.92.7 1.22 1.82.56-1.16 2-1.83 1.43-.68 3.2-.68 1.76 0 2.64.38.87.38 1.4 1.01.89 1.15.89 3.26 0 2.08-.89 6.4-.46 2.12-.46 2.89 0 .78.44 1.24.45.46 1.11.53-.33 1.12-1.47 1.78-1.14.66-2.62.66z"
-        fill="url(#prefix__editing-shiny-gradient)"
-        transform="translate(180.147 86.464)"
-      />
-    </g>
-    <g filter="url(#prefix__editing-shiny2)">
-      <path
-        d="M13.46-22.01q8.09 0 8.09 5.71 0 3.13-2.01 5.01-1.98 1.88-5.45 1.88-1.62 0-2.87-.92-.59-.39-.99-.92 2.41 0 3.68-1.47t1.27-4.34q0-2.87-2.84-2.87h-.79q-.2 0-.36.03L7.39 0H.23l4.06-21.62q3.53-.33 5.58-.36 2.04-.03 3.59-.03zM35.08-5.58q.82.56.82 1.8t-.62 2.03q-.63.79-1.65 1.32Q31.52.66 29.24.66T25.62.17q-1.33-.5-2.22-1.42Q21.65-3 21.65-6.2q0-4.99 2.7-8.02 2.91-3.27 7.96-3.27 3.13 0 4.68 1.32 1.16.99 1.16 2.61 0 5.8-10.03 5.8-.14.86-.14 1.59 0 1.52.68 2.09.68.58 1.93.58 1.26 0 2.59-.58 1.34-.57 1.9-1.5zm-6.73-3.59q2.34 0 3.69-1.46 1.36-1.38 1.36-3.59 0-.76-.28-1.17-.28-.42-.85-.42-.56 0-1.04.22-.47.21-.97.94-1.22 1.65-1.91 5.48zM39.8-3.3q0-.89.46-3.14l1.75-8.91h-1.95l.13-.99q3.96-1.18 7.79-4.09h1.59l-.8 3.6h2.58l-.3 1.48h-2.54l-1.68 8.91q-.43 2.05-.43 2.74 0 1.59 1.38 1.92Q47.45-.66 46.27 0q-1.19.66-2.87.66-1.69 0-2.64-1.06-.96-1.05-.96-2.9zm24.75-7.33l6.66-.59Q68.84-6.01 68.84.03q-.89.63-2.2.63-1.3 0-2.12-.61-.83-.61-1-1.24-.82.86-2.16 1.36-1.33.49-2.75.49T55.95.2q-1.24-.46-2.19-1.49-2.11-2.24-2.11-6.5 0-6.6 3.53-10.56 3.63-4.09 10.06-4.09 4.46 0 6.04 2.31.5.73.5 1.6 0 .87-.38 1.62-.38.74-.98 1.33-1.42 1.32-3.17 1.32-.69 0-1.35-.23.13-.99.13-2.14 0-1.16-.08-1.69-.08-.52-.28-.95-.43-.89-1.37-.89-.94 0-1.98 1-1.04 1.01-1.86 2.66-1.82 3.7-1.82 8.15 0 2.05.79 3.5.86 1.58 2.38 1.58.53 0 1.01-.26.47-.27.67-.46l1.06-6.64zm18.61 1.36q1.19-2.11 1.19-4.26 0-1.42-1.03-1.42-.79 0-1.61 1.35-.86 1.36-1.12 3.11L78.87 0l-6.83.66 3.37-17.49 5.44-.66-.59 3.33q1.61-3.33 5.24-3.33 1.92 0 2.96.99t1.04 3.02q0 2.03-1.34 3.32-1.34 1.28-3.61 1.28-.99 0-1.39-.39zm8.3 8.28q-.78-.86-1.12-2.21-.35-1.35-.35-3.57 0-2.21.76-4.22t2.14-3.46q2.84-3.04 7.53-3.04 1.68 0 2.9.56l5.65-.56-2.45 12.87q-.1.4-.1 1.12 0 .73.45 1.19.45.46 1.11.53-.33 1.12-1.54 1.78-1.2.66-2.56.66-1.35 0-2.26-.51-.9-.51-1.17-1.37-.53.82-1.65 1.35-1.12.53-2.62.53t-2.72-.4q-1.23-.39-2-1.25zm6.96-13.4q-.38.6-.71 1.6-.33 1.01-.87 3.7-.55 2.69-.55 4.6 0 1.92.3 2.48t.83.56q1.05 0 1.83-1.01.77-1.01 1.07-2.79l1.75-9.67q-.69-.59-1.5-.59t-1.29.26q-.48.27-.86.86zM134.51.66q-4 0-4-3.1 0-1.36.58-3.98t.78-3.68q.46-2.41.46-3.17 0-1.68-1.25-1.68-.83 0-1.62 1.14-.79 1.14-1.16 3.41L126.26 0l-6.44.66 1.79-8.98q.29-1.48.56-3.16.26-1.69.26-1.95 0-1.52-1.12-1.52-.76 0-1.59 1.12-.82 1.12-1.28 3.43L116.42 0l-6.5.66 3.47-17.49 5.38-.66-.56 3.33q.85-1.78 2.44-2.55 1.58-.78 4.06-.78 1.42 0 2.34.69.92.7 1.22 1.82.56-1.16 2-1.83 1.43-.68 3.2-.68 1.76 0 2.64.38.87.38 1.4 1.01.89 1.15.89 3.26 0 2.08-.89 6.4-.46 2.12-.46 2.89 0 .78.44 1.24.45.46 1.11.53-.33 1.12-1.47 1.78-1.14.66-2.62.66z"
-        fill="url(#prefix__editing-shiny-gradient2)"
-        transform="translate(180.077 86.55)"
-      />
-    </g>
-    <style />
-  </svg>
-)
+import Styled, { keyframes } from 'styled-components'
+
+const fadeInKeyFrames = keyframes`
+    from{
+        opacity: 0;
+        filter:blur(10px)
+    }
+    to{
+        opacity: 1;
+        filter: blur(0px)
+    }
+`
+
+export const ImgWrapper = Styled.div`
+    animation: ease ${fadeInKeyFrames} 1s;
+    border-radius: 10px;
+    display: block;
+    padding: 56.25% 0 0 0;
+    height: 0;
+    overflow:hidden;
+    width:100%;
+    position: relative;
+`
+export const Img = Styled.img`
+    box-shadow: 0 10px 14px rgba(0,0,0,.2);
+    height: 100%;
+    object-fit:cover;
+    position:absolute;
+    top:0;
+    width:100%;
+`
+export const Button = Styled.button`
+    padding-top: 8px;
+    display:flex;
+    align-items: center;
+    & svg{
+        margin-left: 4px;
+    }
+`
+
+////////////////////////////////////////////////////////////////////////////
+
+TRANSFORMANDO LA ANIMACION A UNA FUNCION REUTILIZABLE
+
+
+import Styled,{keyframes,css} from 'styled-components'
+import { fadeIn } from '../../components/styles/animation'
+
+
+const keyFrameEffect = keyframes`
+    from{
+        filter:blur(33px);
+        opacity: 0
+    }
+    to{
+        filter: blur(0px);
+        opacity:1;
+    }
+`
+
+export const fadeIn = ({ time = '1s', type = 'ease' } = {}) =>
+  css`animation: ${time} ${keyFrameEffect} ${type};`
+
+export const ImgWrapper = Styled.div`
+    ${fadeIn({type='linear'})}
+    border-radius: 10px;
+    display: block;
+    padding: 56.25% 0 0 0;
+    height: 0;
+    overflow:hidden;
+    width:100%;
+    position: relative;
+`
+export const Img = Styled.img`
+    box-shadow: 0 10px 14px rgba(0,0,0,.2);
+    height: 100%;
+    object-fit:cover;
+    position:absolute;
+    top:0;
+    width:100%;
+`
+export const Button = Styled.button`
+    padding-top: 8px;
+    display:flex;
+    align-items: center;
+    & svg{
+        margin-left: 4px;
+    }
+`
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+
+SE PUEDE HACER AUN MAS REUTILIZABLE SEPARANDOLA A OTRO ARCHIVO
+
+creamos la carpeta styles dentro de la carpeta components:
+
+components/styles/animation.js
+------------------------------------------------------------------------------
+
+
+import { keyframes, css } from 'styled-components'
+
+const keyFrameEffect = keyframes`
+    from{
+        filter:blur(33px);
+        opacity: 0
+    }
+    to{
+        filter: blur(0px);
+        opacity:1;
+    }
+`
+
+export const fadeIn = ({ time = '1s', type = 'ease' } = {}) =>
+  css`animation: ${time} ${keyFrameEffect} ${type};`
+
+
+////////////////////////////////////////////////////////////////////////////
+tambien pegamos el archivo globalStyle.js dentro de la carpeta style.
+hacemos el cambio respectivo en App.js
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+En PhotoCard/index.js
+
+importamos fadeIn y lo utilizamos dentro de Img
+----------------------------------------------------------------------------
+
+import Styled from 'styled-components'
+import { fadeIn } from '../../components/styles/animation'
+
+export const ImgWrapper = Styled.div`
+    border-radius: 10px;
+    display: block;
+    padding: 56.25% 0 0 0;
+    height: 0;
+    overflow:hidden;
+    width:100%;
+    position: relative;
+`
+export const Img = Styled.img`
+    ${fadeIn()}
+    box-shadow: 0 10px 14px rgba(0,0,0,.2);
+    height: 100%;
+    object-fit:cover;
+    position:absolute;
+    top:0;
+    width:100%;
+`
+export const Button = Styled.button`
+    padding-top: 8px;
+    display:flex;
+    align-items: center;
+    & svg{
+        margin-left: 4px;
+    }
+`
+
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -149,24 +185,17 @@ export const Logo = props => (
 
 
 
-en App.js importar el logo
 
-////////////////////////////////////////////////////////////////////////////
-import React from 'react'
-import { ListOfCategories } from './components/listOfCategories'
-import { GlobalStyle } from './GlobalStyle'
-import { ListOfPhotocards } from './components/listOfPhotocards'
-import { Logo } from './components/logo'
 
-export const App = () => {
-  return (
-    <>
-      <Logo />
-      <GlobalStyle />
-      <ListOfCategories />
-      <ListOfPhotocards />
-    </>
-  )
-}
-////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
 
