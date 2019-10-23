@@ -1,35 +1,8 @@
-
-SVGR de SVG a componente de ReactJS
-
-crearemos un logo desde la pagina https://maketext.io
-el logo debe llamarse petgram
-seleccionar un diseño, editar el logo como desees
-descargar como un svg dandole click a download
-
-luego ir a la web https://jakearchibald.github.io/svgomg/
-es una herramienta que sirve para optimizar svg
-arrastrar la imagen svg hasta la web
-fijarse que desde ya se ha optimizado el peso de la imagen
-salvar dandole click en el boton "copy as svg".
-
-para convertir un svg en componente de reactJs usaremos la herramienta SVGR
-https://www.smooth-code.com/open-source/svgr/playground/
-copiar el codigo svg y automaticamente se genera el componente en reactJs
-copiar el componente
-
-crear la carpeta components/logo
-y dentro el archivo index.js
-dentro pegar el codigo
-
-////////////////////////////////////////////////////////////////////////////
-index.js: 
-cambiar el nombre a Logo y exportarlo
-
----------------------------------------------------------------------------
 import React from 'react'
+import {Svg} from './style'
 
 export const Logo = props => (
-  <svg
+  <Svg
     width={212.355}
     height={72.806}
     viewBox="143.822 38.597 212.355 72.806"
@@ -138,35 +111,5 @@ export const Logo = props => (
       />
     </g>
     <style />
-  </svg>
+  </Svg>
 )
-
-////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-en App.js importar el logo
-
-////////////////////////////////////////////////////////////////////////////
-import React from 'react'
-import { ListOfCategories } from './components/listOfCategories'
-import { GlobalStyle } from './GlobalStyle'
-import { ListOfPhotocards } from './components/listOfPhotocards'
-import { Logo } from './components/logo'
-
-export const App = () => {
-  return (
-    <>
-      <Logo />
-      <GlobalStyle />
-      <ListOfCategories />
-      <ListOfPhotocards />
-    </>
-  )
-}
-////////////////////////////////////////////////////////////////////////////
-
