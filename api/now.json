@@ -2,10 +2,14 @@
   "version": 2,
   "name": "petgram-server",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "alias": ["petgram"],
 =======
   "alias": ["petgram-server-33"],
 >>>>>>> 75f45ce3e5e2cdeb8bfbb5e00be1d41ec334e5f1
+=======
+  "alias": ["petgram-api"],
+>>>>>>> 6b391a2554f6c8ceeca51d16066dc515826b67a3
   "builds": [{ "src": "index.js", "use": "@now/node" }],
   "routes": [{
     "headers": {
