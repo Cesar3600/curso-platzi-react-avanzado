@@ -1,11 +1,20 @@
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Category } from '../category'
 import { Lista, Item } from './styles'
-import { categories as mockCategories } from '../../../api/db.json'
 
 export const ListOfCategories = () => {
-  const [categories, setCategory] = useState(mockCategories)
+  const [categories, setCategories] = useState([])
+
+  useEffect(
+    () => {
+      window.fetch('https://petgram-server.ccm.now.sh/categories')
+        .then(response => response.json())
+        .then(data => setCategories(data))
+        .catch(err => console.log(err))
+    }, []
+  )
+
   return (
     <Lista>
       {

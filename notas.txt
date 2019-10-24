@@ -93,15 +93,55 @@ mejor performance.
 
 
 
+/////////////////////////////////////////////////////////////////////////////
+
+https://petgram-server.ccm.now.sh/categories
+
+use effect ejecutara una funcion que se ejecutara cada vez que se renderice un componente
 
 
+utilizara useState para crear un estado llamado categories y un setCategories para modificar
+el estado categories
+
+el valor de useState es [] un arreglo vacio ya que la data es de ese tipo 
+
+la funcion useEffect contendra una funcion (callback) que se ejecutara cada vez que se renderize 
+el componente
+
+cuando se renderice el componente se ejecutara use useEffect
+a su vez ejecutara la funcion dentro de ella funcion es un fetch
+úna promesa que llamara los datos y transformara los resultados a json
+cuando se hallan descargado todos
+disparara setcategories que modificara categories y mandara a un nuevo render
+dodne se mostraran los datos.
 
 
+components/ListOfCategories.js :
+------------------------------------------------------------------------------
 
+import React, { useState, useEffect } from 'react'
+import { Category } from '../category'
+import { Lista, Item } from './styles'
 
+export const ListOfCategories = () => {
+  const [categories, setCategories] = useState([])
 
+  useEffect(
+    () => {
+      window.fetch('https://petgram-server.ccm.now.sh/categories')
+        .then(response => response.json())
+        .then(data => setCategories(data))
+        .catch(err => console.log(err))
+    }, []
+  )
 
-
-
+  return (
+    <Lista>
+      {
+        categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
+      }
+    </Lista>
+  )
+}
 
 
