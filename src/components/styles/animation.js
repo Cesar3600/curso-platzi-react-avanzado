@@ -1,9 +1,9 @@
 
 import { keyframes, css } from 'styled-components'
 
-const keyFrameEffect = keyframes`
+const keyFrameEffect = ({ blurIni = '33px' }) => keyframes`
     from{
-        filter:blur(33px);
+        filter:blur(${blurIni});
         opacity: 0
     }
     to{

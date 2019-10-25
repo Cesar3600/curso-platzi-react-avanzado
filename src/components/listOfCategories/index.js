@@ -5,6 +5,7 @@ import { Lista, Item } from './styles'
 
 export const ListOfCategories = () => {
   const [categories, setCategories] = useState([])
+  const [showFixed, setShowFixed] = useState(true)
 
   useEffect(
     () => {
@@ -15,11 +16,31 @@ export const ListOfCategories = () => {
     }, []
   )
 
-  return (
-    <Lista>
-      {
-        categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
+  useEffect(
+    () => {
+      const onScroll = e => {
+        const newShowFixed = window.scrollY > 200
+        showFixed !== newShowFixed && setShowFixed(newShowFixed)
       }
-    </Lista>
+      window.addEventListener('scroll', onScroll)
+      return () => document.removeEventListener('scrol', onScroll)
+    }, [showFixed]
+  )
+
+  const renderList = (fixed) => {
+    return (
+      <Lista className={fixed ? 'fixed' : ''}>
+        {
+          categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
+        }
+      </Lista>
+    )
+  }
+
+  return (
+    <>
+      {renderList()}
+      {showFixed && renderList(true)}
+    </>
   )
 }

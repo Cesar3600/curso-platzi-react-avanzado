@@ -1,124 +1,17 @@
 
-QUE SON HOOKS
-react-hoos esta disponibles a apartir de la version 16.8.0
+USEEFFECT LIMPIANDO EVENTOS
 
-funciones que nos permiten acceder a casi todas las caracteristicas de react desde
-componentes funcionales.
+buscaremos que la lista de categorias se quede a modo de sticky
 
-hooks principales:
-* useState -> añade un estado local en el componente.
-* useEffect -> permite ejecutar una funcion cada vez que renderizemos nuestro componente.
-* useContext -> nos permite acceder a la contextAPI para obtener valores que usaremos en
-toda la aplicacion de forma global sin necesidad de pasarla por las props.
+cortaremos el jsx que retorna listOf categories y lo meteremos a una funcion
+llamada renderList con la finalidad que sea reutilizable
+luego llamaremos esa funcion dos veces pero a una le pasaremos en parametro fixed
+
 
 ////////////////////////////////////////////////////////////////////////////
-se importa el hook userState
-import React, { useState } from 'react'
 
-se crea la funcion Counter y se exporta, en este caso se exporta por defecto
-export default function Counter(){
-
-se crea una constante que es una variable con 2 valores : 
-el primero se refiere al valor del estado
-el segundo valor se refiere a una funcion que actualiza a la primera
-el valor de useState es el valor inicial(0) de counter 
-const [counter,setCounter] = useState(0)
-
-en el evento onClick se evalua la funcion anonima que manipula el valor counter agregandome
-un numero mas 
-
+index.js
 --------------------- -------------------------------------------------------
-
-
-import React, { useState } from 'react
-
-export default function Counter(){
-  const [counter,setCounter] = useState(0)
-  return(
-    <div>
-      <span>{counter}</span>
-      <button onClick = {() => setCounter(counter + 1)}> + </button>
-      <button onClick = {() => setCounter(counter - 1)}> - </button>
-    </div>
-  )
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////
-
-
-import React, { Component } from 'react'
-
-class Counter extends Component{
-  constructor(){
-    super();
-    this.state = {
-      counter : 0
-    }
-  }
-  render(){
-    const {counter} = this.state
-    return(
-      <>
-        <span>{counter}<span>
-        <button onClick = { () => this.setState({counter: counter + 1}) }> + </button>
-        <button onClick = { () => this.setState({counter: counter - 1}) }> - </button>
-      </>
-    )
-  }
-}
-
-/////////////////////////////////////////////////////////////////////////////
-
-HOOKS AUXILIARES
-
-useReducer
-useCallback
-useMemo
-useRef
-useImperativeHandle
-useLayoutEffect
-useDebugValue
-
-puedes crear tu propio custom hook
-
-
-+ventajas
-
-100% compatibles.
-transpilacion con babel.
-mejor performance.
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-
-https://petgram-server.ccm.now.sh/categories
-
-use effect ejecutara una funcion que se ejecutara cada vez que se renderice un componente
-
-
-utilizara useState para crear un estado llamado categories y un setCategories para modificar
-el estado categories
-
-el valor de useState es [] un arreglo vacio ya que la data es de ese tipo 
-
-la funcion useEffect contendra una funcion (callback) que se ejecutara cada vez que se renderize 
-el componente
-
-cuando se renderice el componente se ejecutara use useEffect
-a su vez ejecutara la funcion dentro de ella funcion es un fetch
-úna promesa que llamara los datos y transformara los resultados a json
-cuando se hallan descargado todos
-disparara setcategories que modificara categories y mandara a un nuevo render
-dodne se mostraran los datos.
-
-
-components/ListOfCategories.js :
-------------------------------------------------------------------------------
-
 import React, { useState, useEffect } from 'react'
 import { Category } from '../category'
 import { Lista, Item } from './styles'
@@ -135,13 +28,150 @@ export const ListOfCategories = () => {
     }, []
   )
 
+  const renderList = (fixed) => {
+    return (
+      <Lista className={fixed ? 'fixed' : ''}>
+        {
+          categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
+        }
+      </Lista>
+    )
+  }
+
   return (
-    <Lista>
-      {
-        categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
-      }
-    </Lista>
+    <>
+      {renderList()}
+      {renderList(true)}
+    </>
   )
 }
 
+////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+modificaremos el archivo styles.js
+le daremos estilos al componente Lista que contenga la clase fixed
+----------------------------------------------------------------------------
+
+agregamos &.fixed
+posicion fixed
+centrado
+escalado a la mitad
+z-index para que quede encima
+
+
+import Styled from 'styled-components'
+
+export const Lista = Styled.ul`
+  display: flex;
+  overflow:scroll;
+  width: 100%;
+  &.fixed{
+    background: #fff;
+    border-radius: 60px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    left: 0;
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 5px;
+    position: fixed;
+    right: 0;
+    top: -20px;
+    transform: scale(.5);
+    z-index: 1;
+  }
+`
+
+export const Item = Styled.li`
+  padding: 0 8px;
+`
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+use effect se ejecutara cada vez que se renderize los componentes
+
+----------------------------------------------------------------------------
+
+
+import React, { useState, useEffect } from 'react'
+import { Category } from '../category'
+import { Lista, Item } from './styles'
+
+export const ListOfCategories = () => {
+  const [categories, setCategories] = useState([])
+  const [showFixed, setShowFixed] = useState(true)
+
+  useEffect(
+    () => {
+      window.fetch('https://petgram-server.ccm.now.sh/categories')
+        .then(response => response.json())
+        .then(data => setCategories(data))
+        .catch(err => console.log(err))
+    }, []
+  )
+
+  useEffect(
+    () => {
+      const onScroll = e => {
+        const newShowFixed = window.scrollY > 200
+        showFixed !== newShowFixed && setShowFixed(newShowFixed)
+      }
+      window.addEventListener('scroll', onScroll)
+      return () => document.removeEventListener('scrol', onScroll)
+    }, [showFixed]
+  )
+
+  const renderList = (fixed) => {
+    return (
+      <Lista className={fixed ? 'fixed' : ''}>
+        {
+          categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
+        }
+      </Lista>
+    )
+  }
+
+  return (
+    <>
+      {renderList()}
+      {showFixed && renderList(true)}
+    </>
+  )
+}
+
+creamos useState con el array [showFixed,setShowFixed] con valor inicial true
+cuando se llame al primer renderlist renderizada la lista de categorias de manera normal
+ejecutara la funcion interna del primer useEffect que buscara a travez de una promesa
+traer los datos de petgra-server/categories
+las transforma en json, modifica el estado showfixed y llena el array
+redibuja renderList y muestra las categorias
+
+luego ejecuta {showfixed && renderlist(true)} 
+solo si showfixed tenga el valor de true mostrara renderList(true) el valor booleano...
+se agregara la clase fixed y modificara los estilos del segundo componente renderList
+
+se ejecutara el segundo useEffect, se ejecutara la funcion interna
+que se mantendra escuchando el evento scroll a travez del metodo addEventListener de window
+y cuando lo escuche ejecutara el contenido de la variable scroll.
+el contenido de la variable scroll es una funcion anonima que tiene al evento como parametro.
+window detecta al scroll en la acsisa (y) y si esta es mayor a 200 entonces se evalua y devuelve 
+un valor booleano. Si es mayor sera true.
+este valor se guardara en variable newShowFixed
+si showfixed (que inicia como true) es diferente a newShowFixed (false por que es menor a 200)
+entonces ejecuta setShowFixed(newShowFixed) o sea setearas el valor del estado
+
+
+
+////////////////////////////////////////////////////////////////////////////
 
