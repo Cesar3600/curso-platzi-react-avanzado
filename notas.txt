@@ -1,36 +1,18 @@
 
-USEEFFECT LIMPIANDO EVENTOS
+15 useCategoriesData
 
-buscaremos que la lista de categorias se quede a modo de sticky
+modificaremos el archivo index.js de listOfCategories
 
-cortaremos el jsx que retorna listOf categories y lo meteremos a una funcion
-llamada renderList con la finalidad que sea reutilizable
-luego llamaremos esa funcion dos veces pero a una le pasaremos en parametro fixed
-
-
+quitaremos el calssName = {fixed ? 'fixed' : ''}
+y lo reemplazaremos por una props
+fixed = {fixed}
 ////////////////////////////////////////////////////////////////////////////
 
-index.js
+listOfCategories/index.js
 --------------------- -------------------------------------------------------
-import React, { useState, useEffect } from 'react'
-import { Category } from '../category'
-import { Lista, Item } from './styles'
-
-export const ListOfCategories = () => {
-  const [categories, setCategories] = useState([])
-
-  useEffect(
-    () => {
-      window.fetch('https://petgram-server.ccm.now.sh/categories')
-        .then(response => response.json())
-        .then(data => setCategories(data))
-        .catch(err => console.log(err))
-    }, []
-  )
-
   const renderList = (fixed) => {
     return (
-      <Lista className={fixed ? 'fixed' : ''}>
+      <Lista fixed={fixed}>
         {
           categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
         }
@@ -38,40 +20,26 @@ export const ListOfCategories = () => {
     )
   }
 
-  return (
-    <>
-      {renderList()}
-      {renderList(true)}
-    </>
-  )
-}
-
 ////////////////////////////////////////////////////////////////////////////
 
 
 
+en listofCategories/styled.js
 
+importaremos {css} de styled-components
+y dentro de Lista agregar la props a travez de ${}:
+${props => props.fixed && css` ... aqui el estilo css ... `}
 
+usamos una funcion con un parametro props
+si si el props fixed existe entonces ejecuta la css:
 
-////////////////////////////////////////////////////////////////////////////
-modificaremos el archivo styles.js
-le daremos estilos al componente Lista que contenga la clase fixed
-----------------------------------------------------------------------------
-
-agregamos &.fixed
-posicion fixed
-centrado
-escalado a la mitad
-z-index para que quede encima
-
-
-import Styled from 'styled-components'
-
+import Styled, { css } from 'styled-components'
+import { fadeIn } from '../styles/animation'
 export const Lista = Styled.ul`
   display: flex;
   overflow:scroll;
   width: 100%;
-  &.fixed{
+  ${props => props.fixed && css`
     background: #fff;
     border-radius: 60px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
@@ -84,94 +52,9 @@ export const Lista = Styled.ul`
     top: -20px;
     transform: scale(.5);
     z-index: 1;
-  }
-`
-
-export const Item = Styled.li`
-  padding: 0 8px;
+    ${fadeIn({ time: '1s', blurIni: '5px' })}
+  `}
 `
 
 
-
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////
-use effect se ejecutara cada vez que se renderize los componentes
-
-----------------------------------------------------------------------------
-
-
-import React, { useState, useEffect } from 'react'
-import { Category } from '../category'
-import { Lista, Item } from './styles'
-
-export const ListOfCategories = () => {
-  const [categories, setCategories] = useState([])
-  const [showFixed, setShowFixed] = useState(true)
-
-  useEffect(
-    () => {
-      window.fetch('https://petgram-server.ccm.now.sh/categories')
-        .then(response => response.json())
-        .then(data => setCategories(data))
-        .catch(err => console.log(err))
-    }, []
-  )
-
-  useEffect(
-    () => {
-      const onScroll = e => {
-        const newShowFixed = window.scrollY > 200
-        showFixed !== newShowFixed && setShowFixed(newShowFixed)
-      }
-      window.addEventListener('scroll', onScroll)
-      return () => document.removeEventListener('scrol', onScroll)
-    }, [showFixed]
-  )
-
-  const renderList = (fixed) => {
-    return (
-      <Lista className={fixed ? 'fixed' : ''}>
-        {
-          categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
-        }
-      </Lista>
-    )
-  }
-
-  return (
-    <>
-      {renderList()}
-      {showFixed && renderList(true)}
-    </>
-  )
-}
-
-creamos useState con el array [showFixed,setShowFixed] con valor inicial true
-cuando se llame al primer renderlist renderizada la lista de categorias de manera normal
-ejecutara la funcion interna del primer useEffect que buscara a travez de una promesa
-traer los datos de petgra-server/categories
-las transforma en json, modifica el estado showfixed y llena el array
-redibuja renderList y muestra las categorias
-
-luego ejecuta {showfixed && renderlist(true)} 
-solo si showfixed tenga el valor de true mostrara renderList(true) el valor booleano...
-se agregara la clase fixed y modificara los estilos del segundo componente renderList
-
-se ejecutara el segundo useEffect, se ejecutara la funcion interna
-que se mantendra escuchando el evento scroll a travez del metodo addEventListener de window
-y cuando lo escuche ejecutara el contenido de la variable scroll.
-el contenido de la variable scroll es una funcion anonima que tiene al evento como parametro.
-window detecta al scroll en la acsisa (y) y si esta es mayor a 200 entonces se evalua y devuelve 
-un valor booleano. Si es mayor sera true.
-este valor se guardara en variable newShowFixed
-si showfixed (que inicia como true) es diferente a newShowFixed (false por que es menor a 200)
-entonces ejecuta setShowFixed(newShowFixed) o sea setearas el valor del estado
-
-
-
-////////////////////////////////////////////////////////////////////////////
 

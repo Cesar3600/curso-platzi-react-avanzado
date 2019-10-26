@@ -3,10 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { Category } from '../category'
 import { Lista, Item } from './styles'
 
-export const ListOfCategories = () => {
+function useCategoriesData () {
   const [categories, setCategories] = useState([])
-  const [showFixed, setShowFixed] = useState(true)
-
   useEffect(
     () => {
       window.fetch('https://petgram-server.ccm.now.sh/categories')
@@ -15,6 +13,12 @@ export const ListOfCategories = () => {
         .catch(err => console.log(err))
     }, []
   )
+  return { categories }
+}
+
+export const ListOfCategories = () => {
+  const { categories } = useCategoriesData()
+  const [showFixed, setShowFixed] = useState(true)
 
   useEffect(
     () => {
@@ -29,7 +33,7 @@ export const ListOfCategories = () => {
 
   const renderList = (fixed) => {
     return (
-      <Lista className={fixed ? 'fixed' : ''}>
+      <Lista fixed={fixed}>
         {
           categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
         }
