@@ -18,7 +18,7 @@ export const Lista = Styled.ul`
     top: -20px;
     transform: scale(.5);
     z-index: 1;
-    ${fadeIn({ time: '1s', blurIni: '5px' })}
+    ${fadeIn({ time: '.5s', blurIni: '7px' })}
   `}
 `
 
