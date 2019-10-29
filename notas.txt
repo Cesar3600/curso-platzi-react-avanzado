@@ -58,3 +58,31 @@ export const Lista = Styled.ul`
 
 
 
+//////////////////////////////////////////////////////////////////
+creando un custom hooks
+para que traiga las categorias
+------------------------------------------------------------------
+primero creamos la funcio useCategoriesData que estara fuera de la
+funcion exportable
+
+
+function useCategoriesData () {
+  const [categories, setCategories] = useState([])
+  useEffect(
+    () => {
+      window.fetch('https://petgram-server.ccm.now.sh/categories')
+        .then(response => response.json())
+        .then(data => setCategories(data))
+        .catch(err => console.log(err))
+    }, []
+  )
+  return { categories }
+}
+
+
+esta funcion contiene el useState y el useEffect
+
+
+
+/////////////////////////////////////////////////////////////////
+

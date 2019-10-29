@@ -2,12 +2,12 @@ import Styled from 'styled-components'
 import { fadeIn } from '../../components/styles/animation'
 
 export const ImgWrapper = Styled.div`
-    ${fadeIn()}
+    ${fadeIn({ time: '2s' })}
     border-radius: 10px;
     display: block;
     padding: 56.25% 0 0 0;
     height: 0;
-    overflow:hidden;
+    overflow:hidden;    
     width:100%;
     position: relative;
 `
