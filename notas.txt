@@ -61,9 +61,14 @@ export const Lista = Styled.ul`
 //////////////////////////////////////////////////////////////////
 creando un custom hooks
 para que traiga las categorias
-------------------------------------------------------------------
-primero creamos la funcio useCategoriesData que estara fuera de la
+primero creamos la funcion useCategoriesData que estara fuera de la
 funcion exportable
+esta funcion va ser la responsable de realizar el fetching de datos
+entonces necesitara tener un estado local
+por eso esta funcion contiene el useState y ademas el useEffect
+como resultado se devolvera {categories} como un objeto
+------------------------------------------------------------------
+
 
 
 function useCategoriesData () {
@@ -80,9 +85,63 @@ function useCategoriesData () {
 }
 
 
-esta funcion contiene el useState y el useEffect
+
+para utilizarlo:
+dentro de la funcion listOfCategories ejecutas useCategoriesData() y lo
+instancias hacia una constante como un objeto categories
+
+export const ListOfCategories = () => {
+  const { categories } = useCategoriesData()
+  .
+  .
+  .  
+}
+
+de este modo en el retorno renderList el map no fallara : 
+categories.map(category => ....)
+
+
+
 
 
 
 /////////////////////////////////////////////////////////////////
+
+
+se puede agregar un loading desde useCategoriesData()
+ya que es la funcion que carga la data a travez de fetch
+se crea un useState que deberia tener un valor inicial de false
+
+dentro del fetch despues de cargar la data en el estado se setea 
+el valor del estado usando setLoading
+
+se retorna el objeto {categories, loading}
+
+dentro de listOfCategories se puede utilizar:
+export const ListOfCategories = () => {
+  const { categories, loading } = useCategoriesData() ...}
+
+luego se puede utilizar de esta forma, antes del return :
+
+  if (loading) {
+    return 'cargando'
+  }
+
+
+
+EXPLICACION AL USO DEL SEGUNDO PARAMETRO DE USEEFFECT
+
+la explicacion del segundo parametro de useEffect tiene que ver con el ciclo de vida
+al ejecutarse useState le da un valor inicial a un estado declarado y una funcion que 
+setea dicho estado
+luego dibuja la estructura jsx que retorna la funcion
+lo siguiente es que se ejecuta el hook useEffect, esta es una funcion que tiene un callback
+en el ejemplo ejecuta una promise y modifica el valor inicial del estado del useState.
+
+como se modifico el estado se vuelve a renderizar el jsx, y vuelve a ejecutar useEffect
+
+para parar este ciclo infinito useEffect utiliza un segundo parametro que debe ser un array
+y dentro deben estar los parametros que necesita el useEffect para seguir seteando useState
+si estos parametros no alteran su valor entonces detiene el proceso.
+en caso de que no halla dependencia de parametros se utiliza un array vacio.
 

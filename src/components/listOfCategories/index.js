@@ -5,19 +5,25 @@ import { Lista, Item } from './styles'
 
 function useCategoriesData () {
   const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(false)
   useEffect(
     () => {
+      setLoading(true)
       window.fetch('https://petgram-server.ccm.now.sh/categories')
         .then(response => response.json())
-        .then(data => setCategories(data))
+        .then(
+          data => {
+            setCategories(data)
+            setLoading(false)
+          })
         .catch(err => console.log(err))
     }, []
   )
-  return { categories }
+  return { categories, loading }
 }
 
 export const ListOfCategories = () => {
-  const { categories } = useCategoriesData()
+  const { categories, loading } = useCategoriesData()
   const [showFixed, setShowFixed] = useState(true)
 
   useEffect(
@@ -35,10 +41,14 @@ export const ListOfCategories = () => {
     return (
       <Lista fixed={fixeder}>
         {
-          categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
+          loading ? <Item key='loading'><Category /></Item> : categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
         }
       </Lista>
     )
+  }
+
+  if (loading) {
+    return 'cargando'
   }
 
   return (
