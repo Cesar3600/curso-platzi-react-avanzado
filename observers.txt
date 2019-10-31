@@ -1,0 +1,13 @@
+
+https://css-tricks.com/a-few-functional-uses-for-intersection-observer-to-know-when-an-element-is-in-view/
+
+
+javascrpt tiene un gran numero de observers escondidos. interception observers es uno de ellos 
+los observers son objetos que muestran algo en tiempo real. Basicamente los observers esperan
+a que ocurra algo en un lugar determinado.
+
+cada tipo de observador espera mirar algo diferente 
+
+El primer observador que examinaremos es el mutation observer que esta mirando cambios en el DOM
+
+
