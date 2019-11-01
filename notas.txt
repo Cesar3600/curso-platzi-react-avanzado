@@ -1,147 +1,58 @@
 
-15 useCategoriesData
+16 USANDO INTERSECTION OBSERVER
 
-modificaremos el archivo index.js de listOfCategories
+Intersection observer es una API de javascript. su funcion consiste en esperar
+la aparicion de un nodo del DOM (que es elegido) y notificarlo a travez de una 
+propiedad llamada isIntersecting
 
-quitaremos el calssName = {fixed ? 'fixed' : ''}
-y lo reemplazaremos por una props
-fixed = {fixed}
+En Photocard/index.js
 ////////////////////////////////////////////////////////////////////////////
+Se importa useRef, useEffect, useState 
+se instancia useRef a una variable con el valor inicial de null
+este pasa a la prop ref del nodo que se quiere observar
 
-listOfCategories/index.js
---------------------- -------------------------------------------------------
-  const renderList = (fixed) => {
-    return (
-      <Lista fixed={fixed}>
-        {
-          categories.map(category => <Item key={category.id}><Category {...category} /></Item>)
-        }
-      </Lista>
+en el Hook useEffect se instancia intersection Observer hacia una variable
+y dentro del callback de intersection 
+
+
+
+
+
+
+import React,{useRef,useEffect} from 'react'
+import {ImgWrapper, Img, Button} from './styles'
+import { MdFavoriteBorder } from "react-icons/md";
+
+const IMG_DEFAULT = 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+
+export const PhotoCard = ({ id, likes='?', src = IMG_DEFAULT }) => {
+    const referencia = useRef(null)
+
+    useEffect(() => {
+        const observer = new window.IntersectionObserver(entry => {
+            const {isIntersecting} = entry[0]
+            console.log(isIntersecting)
+        })
+        observer.observe(referencia.current)
+        //console.log(referencia.current)
+    }, [referencia])
+
+    return(
+        <article ref={referencia}>
+            <a href={`/detail/${id}`}>
+                <ImgWrapper>
+                    <Img src={src}/>
+                </ImgWrapper>
+            </a>
+            <Button>
+                <MdFavoriteBorder size="32px"/>{likes} likes!
+            </Button>
+        </article>
     )
-  }
+}
+
+--------------------- -------------------------------------------------------
 
 ////////////////////////////////////////////////////////////////////////////
 
-
-
-en listofCategories/styled.js
-
-importaremos {css} de styled-components
-y dentro de Lista agregar la props a travez de ${}:
-${props => props.fixed && css` ... aqui el estilo css ... `}
-
-usamos una funcion con un parametro props
-si si el props fixed existe entonces ejecuta la css:
-
-import Styled, { css } from 'styled-components'
-import { fadeIn } from '../styles/animation'
-export const Lista = Styled.ul`
-  display: flex;
-  overflow:scroll;
-  width: 100%;
-  ${props => props.fixed && css`
-    background: #fff;
-    border-radius: 60px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    left: 0;
-    margin: 0 auto;
-    max-width: 400px;
-    padding: 5px;
-    position: fixed;
-    right: 0;
-    top: -20px;
-    transform: scale(.5);
-    z-index: 1;
-    ${fadeIn({ time: '1s', blurIni: '5px' })}
-  `}
-`
-
-
-
-//////////////////////////////////////////////////////////////////
-creando un custom hooks
-para que traiga las categorias
-primero creamos la funcion useCategoriesData que estara fuera de la
-funcion exportable
-esta funcion va ser la responsable de realizar el fetching de datos
-entonces necesitara tener un estado local
-por eso esta funcion contiene el useState y ademas el useEffect
-como resultado se devolvera {categories} como un objeto
-------------------------------------------------------------------
-
-
-
-function useCategoriesData () {
-  const [categories, setCategories] = useState([])
-  useEffect(
-    () => {
-      window.fetch('https://petgram-server.ccm.now.sh/categories')
-        .then(response => response.json())
-        .then(data => setCategories(data))
-        .catch(err => console.log(err))
-    }, []
-  )
-  return { categories }
-}
-
-
-
-para utilizarlo:
-dentro de la funcion listOfCategories ejecutas useCategoriesData() y lo
-instancias hacia una constante como un objeto categories
-
-export const ListOfCategories = () => {
-  const { categories } = useCategoriesData()
-  .
-  .
-  .  
-}
-
-de este modo en el retorno renderList el map no fallara : 
-categories.map(category => ....)
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-
-
-se puede agregar un loading desde useCategoriesData()
-ya que es la funcion que carga la data a travez de fetch
-se crea un useState que deberia tener un valor inicial de false
-
-dentro del fetch despues de cargar la data en el estado se setea 
-el valor del estado usando setLoading
-
-se retorna el objeto {categories, loading}
-
-dentro de listOfCategories se puede utilizar:
-export const ListOfCategories = () => {
-  const { categories, loading } = useCategoriesData() ...}
-
-luego se puede utilizar de esta forma, antes del return :
-
-  if (loading) {
-    return 'cargando'
-  }
-
-
-
-EXPLICACION AL USO DEL SEGUNDO PARAMETRO DE USEEFFECT
-
-la explicacion del segundo parametro de useEffect tiene que ver con el ciclo de vida
-al ejecutarse useState le da un valor inicial a un estado declarado y una funcion que 
-setea dicho estado
-luego dibuja la estructura jsx que retorna la funcion
-lo siguiente es que se ejecuta el hook useEffect, esta es una funcion que tiene un callback
-en el ejemplo ejecuta una promise y modifica el valor inicial del estado del useState.
-
-como se modifico el estado se vuelve a renderizar el jsx, y vuelve a ejecutar useEffect
-
-para parar este ciclo infinito useEffect utiliza un segundo parametro que debe ser un array
-y dentro deben estar los parametros que necesita el useEffect para seguir seteando useState
-si estos parametros no alteran su valor entonces detiene el proceso.
-en caso de que no halla dependencia de parametros se utiliza un array vacio.
 
