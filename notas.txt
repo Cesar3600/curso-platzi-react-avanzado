@@ -1,58 +1,65 @@
-
-16 USANDO INTERSECTION OBSERVER
-
-Intersection observer es una API de javascript. su funcion consiste en esperar
-la aparicion de un nodo del DOM (que es elegido) y notificarlo a travez de una 
-propiedad llamada isIntersecting
-
-En Photocard/index.js
-////////////////////////////////////////////////////////////////////////////
-Se importa useRef, useEffect, useState 
-se instancia useRef a una variable con el valor inicial de null
-este pasa a la prop ref del nodo que se quiere observar
-
-en el Hook useEffect se instancia intersection Observer hacia una variable
-y dentro del callback de intersection 
+17 USO DE POLYFILL DE INTERSECTION OBSERVER E IMPORTS DINAMICOS
 
 
+No todos los nabegadores soportan intersection observer por ello
+nos piden que instalemos un polyfill
+
+npm install intersection-observer 
+
+vamos a usar la dependencia polyfill dentro de la funcion useEffect
+por que es alli donde estamos pensando que estamos soportando intersection observer
+y no es correcto
 
 
+podriamos importar la dependencia y colocarlo arriba pero eso implicaria que siempre
+se tendria que llamar y eso no siempre es asi solo queremos que se necesite cuando 
+se haga el hook
 
-
-import React,{useRef,useEffect} from 'react'
-import {ImgWrapper, Img, Button} from './styles'
-import { MdFavoriteBorder } from "react-icons/md";
-
-const IMG_DEFAULT = 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
-
-export const PhotoCard = ({ id, likes='?', src = IMG_DEFAULT }) => {
-    const referencia = useRef(null)
+para eso utilizaremos un import dinamico
+dentro de useEffect importamos la dependencia a modo de un metodo
+import ('intersection-observer)
 
     useEffect(() => {
-        const observer = new window.IntersectionObserver(entry => {
-            const {isIntersecting} = entry[0]
-            console.log(isIntersecting)
-        })
-        observer.observe(referencia.current)
-        //console.log(referencia.current)
+        import('intersection-observer')
+
+
+este import devolvera una promesa. la promesa se resolvera cuando la dependencia este lista
+al ser un polyfill lo que hace es parchear el objeto window por ellos no hay que preocuparse 
+de devolver algo en la funcion then. O sea que cuando se recsuelva la promesa intersection observer
+estara disponible de forma global
+
+    const referencia = useRef(null)
+    const [show,setShow] = useState(false)
+    useEffect(() => {
+        import('intersection-observer')
+            .then(()=>{
+                const observer = new window.IntersectionObserver(entry => {
+                    const {isIntersecting} = entry[0]
+                    isIntersecting && setShow(true)
+                })
+                observer.observe(referencia.current)
+            })
     }, [referencia])
 
-    return(
-        <article ref={referencia}>
-            <a href={`/detail/${id}`}>
-                <ImgWrapper>
-                    <Img src={src}/>
-                </ImgWrapper>
-            </a>
-            <Button>
-                <MdFavoriteBorder size="32px"/>{likes} likes!
-            </Button>
-        </article>
-    )
-}
-
---------------------- -------------------------------------------------------
-
-////////////////////////////////////////////////////////////////////////////
+como se observa arriba, el codigo const observer =  new window.Intersection ... se encontrara dentro de la promesa
 
 
+
+
+
+Pero que pasa si no necesitamos del polyfill?
+
+
+    useEffect(() => {
+        Promise.resolve(
+            typeof window.IntersectionObserver != 'undefined' 
+            ? window.IntersectionObserver
+            : import('intersection-observer') 
+        ).then(()=>{
+            const observer = new window.IntersectionObserver(entry => {
+                const {isIntersecting} = entry[0]
+                isIntersecting && setShow(true)
+            })
+            observer.observe(referencia.current)
+        })
+    }, [referencia])

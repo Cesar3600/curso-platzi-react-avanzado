@@ -9,12 +9,17 @@ export const PhotoCard = ({ id, likes='?', src = IMG_DEFAULT }) => {
     const referencia = useRef(null)
     const [show,setShow] = useState(false)
     useEffect(() => {
-        const observer = new window.IntersectionObserver(entry => {
-            const {isIntersecting} = entry[0]
-            isIntersecting && setShow(true)
+        Promise.resolve(
+            typeof window.IntersectionObserver != 'undefined' 
+            ? window.IntersectionObserver
+            : import('intersection-observer') 
+        ).then(()=>{
+            const observer = new window.IntersectionObserver(entry => {
+                const {isIntersecting} = entry[0]
+                isIntersecting && setShow(true)
+            })
+            observer.observe(referencia.current)
         })
-        observer.observe(referencia.current)
-        //console.log(referencia.current)
     }, [referencia])
 
     return(
