@@ -11,6 +11,9 @@ export const ImgWrapper = Styled.div`
     width:100%;
     position: relative;
 `
+export const Article = Styled.article`
+    min-height:300px;
+`
 export const Img = Styled.img`
     box-shadow: 0 10px 14px rgba(0,0,0,.2);
     height: 100%;

@@ -26,6 +26,7 @@
     "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
+    "intersection-observer": "^0.7.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-icons": "^3.7.0",
@@ -38,6 +39,7 @@
     "parser": "babel-eslint"
   },
   "eslintConfig": {
+    "parser": "babel-eslint",
     "extends": [
       "./node_modules/standard/eslintrc.json"
     ]
