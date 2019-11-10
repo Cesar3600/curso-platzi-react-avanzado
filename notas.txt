@@ -48,7 +48,12 @@ como se observa arriba, el codigo const observer =  new window.Intersection ... 
 
 
 Pero que pasa si no necesitamos del polyfill?
-
+entonces buscaremos que solo se utilice el polyfill si es que se necesitamos
+para eso creamos un Promise y buscaremos que se resuelva
+si el tipo de Interception observer es diferente a indefinido
+o sea que existe entonces que ejecute window.Interception
+en caso contrario que importe el polyfill intersection-observer
+una vez terminada esa evaluacion que ejecute lo que esta dentro de .then
 
     useEffect(() => {
         Promise.resolve(
