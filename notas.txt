@@ -1,7 +1,7 @@
 17 USO DE POLYFILL DE INTERSECTION OBSERVER E IMPORTS DINAMICOS
 
 
-No todos los nabegadores soportan intersection observer por ello
+No todos los navegadores soportan intersection observer por ello
 nos piden que instalemos un polyfill
 
 npm install intersection-observer 
